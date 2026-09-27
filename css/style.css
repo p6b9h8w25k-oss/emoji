@@ -1,0 +1,308 @@
+/* ===================================================================
+   style.css — تصميم Neumorphism كامل، Mobile First
+   =================================================================== */
+
+:root{
+  --bg:#e5dee1;
+  --light:#ffffff;
+  --dark:#c6b8bd;
+  --maroon:#7a1e3c;
+  --maroon-d:#5c1530;
+  --text:#4d3d45;
+  --muted:#8a747c;
+  --success:#2f8f5c;
+  --danger:#c22f4f;
+  --radius:22px;
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  min-height:100vh;
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Cairo',sans-serif;
+  padding-bottom:24px;
+  -webkit-tap-highlight-color:transparent;
+}
+
+button{font-family:'Cairo',sans-serif;cursor:pointer;}
+button:disabled{opacity:.45;cursor:not-allowed;}
+input{font-family:'Cairo',sans-serif;}
+ul{list-style:none;margin:0;padding:0;}
+.hidden{display:none !important;}
+.muted{color:var(--muted);font-size:14px;text-align:center;margin:0 0 12px;}
+
+/* ---------- Neumorphism base shadows ---------- */
+.neu-flat{
+  background:var(--bg);
+  box-shadow:6px 6px 12px var(--dark), -6px -6px 12px var(--light);
+}
+.neu-raised{
+  background:var(--bg);
+  border-radius:var(--radius);
+  box-shadow:9px 9px 18px var(--dark), -9px -9px 18px var(--light);
+}
+.neu-inset{
+  background:var(--bg);
+  border-radius:16px;
+  box-shadow:inset 6px 6px 12px var(--dark), inset -6px -6px 12px var(--light);
+}
+
+/* ---------- Layout ---------- */
+#app{
+  max-width:440px;
+  margin:0 auto;
+  padding:16px;
+}
+.screen{display:none;animation:fadeSlide .35s ease;}
+.screen.active{display:block;}
+@keyframes fadeSlide{
+  from{opacity:0;transform:translateY(10px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+.card{padding:22px 18px;margin-top:14px;}
+
+/* ---------- Topbar ---------- */
+#topbar{
+  display:none;
+  position:sticky;top:0;z-index:20;
+  max-width:440px;margin:0 auto;
+  border-radius:0 0 20px 20px;
+  padding:10px 14px;
+  align-items:center;justify-content:space-between;
+}
+#topbar.visible{display:flex;}
+.topbar-team{flex:1;text-align:center;}
+.topbar-name{display:block;font-size:11px;color:var(--muted);}
+.topbar-score{display:block;font-size:22px;font-weight:800;color:var(--maroon);}
+.topbar-badges{display:flex;justify-content:center;gap:6px;font-size:10px;color:var(--muted);margin-top:2px;flex-wrap:wrap;}
+.topbar-badges span{background:var(--bg);border-radius:8px;padding:1px 5px;box-shadow:2px 2px 4px var(--dark), -2px -2px 4px var(--light);}
+.topbar-vs{font-weight:900;color:var(--maroon-d);padding:0 8px;font-size:13px;}
+
+/* ---------- Splash ---------- */
+.splash-card{text-align:center;}
+.logo-slot{
+  height:120px;display:flex;align-items:center;justify-content:center;
+  color:var(--maroon);font-weight:700;font-size:14px;margin-bottom:18px;
+}
+.game-title{font-size:28px;font-weight:900;color:var(--maroon);margin:0 0 8px;}
+.subtitle{color:var(--muted);font-size:14px;margin-bottom:22px;}
+
+/* ---------- Buttons ---------- */
+.big-btn{
+  display:block;width:100%;border:none;border-radius:18px;
+  padding:18px 12px;margin-bottom:12px;font-weight:800;font-size:16px;
+  background:var(--bg);color:var(--text);
+  box-shadow:6px 6px 12px var(--dark), -6px -6px 12px var(--light);
+  transition:box-shadow .12s ease, transform .12s ease;
+}
+.big-btn:active{
+  box-shadow:inset 4px 4px 8px var(--dark), inset -4px -4px 8px var(--light);
+  transform:translateY(1px);
+}
+.big-btn.primary{background:linear-gradient(145deg,var(--maroon),var(--maroon-d));color:#fff;}
+.big-btn.success{background:linear-gradient(145deg,#3fbf7f,var(--success));color:#fff;}
+.big-btn.danger{background:linear-gradient(145deg,#e0546f,var(--danger));color:#fff;}
+
+.small-btn{
+  border:none;border-radius:14px;padding:10px 16px;font-weight:700;font-size:13px;
+  background:var(--bg);color:var(--maroon);
+  box-shadow:4px 4px 8px var(--dark), -4px -4px 8px var(--light);
+  margin-bottom:14px;
+}
+.small-btn:active{box-shadow:inset 3px 3px 6px var(--dark), inset -3px -3px 6px var(--light);}
+
+.tiny-btn{
+  border:none;border-radius:10px;width:34px;height:34px;font-size:14px;
+  background:var(--bg);box-shadow:3px 3px 6px var(--dark), -3px -3px 6px var(--light);
+}
+.tiny-btn:active{box-shadow:inset 2px 2px 4px var(--dark), inset -2px -2px 4px var(--light);}
+
+.link-btn{
+  display:block;margin:6px auto 10px;border:none;background:none;
+  color:var(--maroon);font-weight:700;font-size:13px;text-decoration:underline;
+}
+
+/* ---------- Forms ---------- */
+.field-label{display:block;font-size:13px;color:var(--muted);margin:14px 0 6px;font-weight:700;}
+.neu-input{
+  width:100%;border:none;border-radius:16px;padding:14px 16px;font-size:15px;
+  background:var(--bg);color:var(--text);
+  box-shadow:inset 5px 5px 10px var(--dark), inset -5px -5px 10px var(--light);
+}
+.emoji-input{font-size:22px;text-align:center;}
+.player-row{display:flex;gap:8px;margin-bottom:10px;align-items:center;}
+.player-row .player-input{flex:1;}
+.remove-player-btn{
+  flex-shrink:0;width:38px;height:38px;border:none;border-radius:12px;
+  background:var(--bg);color:var(--danger);font-weight:800;
+  box-shadow:4px 4px 8px var(--dark), -4px -4px 8px var(--light);
+}
+.error-box{color:var(--danger);font-size:13px;text-align:center;min-height:18px;margin:10px 0;font-weight:700;}
+.error-box.visible{animation:shake .3s;}
+@keyframes shake{
+  0%,100%{transform:translateX(0);}
+  25%{transform:translateX(-4px);}
+  75%{transform:translateX(4px);}
+}
+
+/* ---------- Teams screen ---------- */
+.shuffling{text-align:center;padding:30px 0;}
+.shuffle-spinner{font-size:48px;animation:spin 1s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.teams-grid{display:flex;gap:12px;margin-bottom:14px;}
+.team-box{flex:1;padding:14px 10px;text-align:center;}
+.team-box h3{color:var(--maroon);font-size:15px;margin:0 0 8px;}
+.team-box li{padding:4px 0;font-size:14px;}
+.shared-tag{font-size:10px;background:var(--maroon);color:#fff;border-radius:8px;padding:1px 6px;margin-right:4px;}
+.shared-note{text-align:center;font-size:13px;color:var(--maroon-d);font-weight:700;margin:8px 0 16px;}
+
+/* ---------- Category / options ---------- */
+.options-column{display:flex;flex-direction:column;}
+
+/* ---------- Judge prep ---------- */
+.judge-only-badge{
+  text-align:center;background:var(--maroon);color:#fff;font-weight:800;
+  font-size:12px;border-radius:12px;padding:8px;margin-bottom:14px;
+}
+.prep-emojis-box{
+  text-align:center;font-size:40px;padding:22px 10px;margin:12px 0;letter-spacing:6px;
+}
+.prep-answer-box{
+  display:flex;justify-content:center;gap:8px;align-items:center;
+  font-size:15px;margin-bottom:18px;
+}
+.prep-answer-box b{color:var(--maroon);font-size:18px;}
+
+/* ---------- Play screen ---------- */
+.play-team-label{text-align:center;font-size:19px;font-weight:800;margin-bottom:4px;}
+.play-team-label.team-1{color:var(--maroon);}
+.play-team-label.team-2{color:#3b6ea8;}
+.play-team-members{text-align:center;font-size:13px;color:var(--muted);margin-bottom:16px;}
+
+.team-switch-anim{animation:switchPulse .5s ease;}
+@keyframes switchPulse{
+  0%{transform:scale(.97);opacity:.5;}
+  100%{transform:scale(1);opacity:1;}
+}
+
+.timer-display{
+  text-align:center;font-size:34px;font-weight:900;color:var(--maroon);
+  padding:12px;margin-bottom:16px;letter-spacing:2px;
+}
+.timer-display.timer-warning{color:var(--danger);animation:pulseWarn .6s infinite;}
+.timer-display.timer-danger{color:var(--danger);}
+@keyframes pulseWarn{
+  0%,100%{transform:scale(1);}
+  50%{transform:scale(1.08);}
+}
+
+.emojis-display{
+  text-align:center;font-size:46px;padding:26px 10px;margin-bottom:18px;letter-spacing:8px;
+}
+
+.assist-row{display:flex;gap:12px;justify-content:center;margin-bottom:10px;}
+.assist-btn{
+  border:none;border-radius:16px;padding:12px 18px;font-weight:800;font-size:15px;
+  background:var(--bg);color:var(--maroon);
+  box-shadow:5px 5px 10px var(--dark), -5px -5px 10px var(--light);
+}
+.assist-btn:active{box-shadow:inset 4px 4px 8px var(--dark), inset -4px -4px 8px var(--light);}
+.assist-btn.assist-active{color:#fff;background:linear-gradient(145deg,var(--maroon),var(--maroon-d));}
+.assist-btn .count{font-size:12px;opacity:.8;}
+
+.judge-panel{
+  margin-top:16px;padding:16px;max-height:400px;overflow:hidden;
+  transition:max-height .3s ease, opacity .3s ease, padding .3s ease;
+}
+.judge-panel.collapsed{max-height:0;padding:0 16px;opacity:0;}
+.judge-answer-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:14px;font-size:14px;}
+.judge-answer-row b{color:var(--maroon);font-size:16px;min-width:70px;text-align:center;}
+.judge-answer-row b.revealed{letter-spacing:normal;}
+.judge-actions{display:flex;gap:10px;}
+.judge-actions .big-btn{margin-bottom:0;}
+
+.overlay{
+  display:none;position:fixed;inset:0;background:rgba(77,61,69,.55);
+  align-items:center;justify-content:center;z-index:50;
+}
+.overlay.visible{display:flex;}
+.overlay-card{padding:30px 40px;text-align:center;}
+.overlay-card p{margin:0 0 10px;font-weight:800;}
+.search-countdown{font-size:44px;font-weight:900;color:var(--maroon);}
+
+.answer-flash{
+  position:fixed;top:40%;left:50%;transform:translate(-50%,-50%) scale(.6);
+  font-size:26px;font-weight:900;padding:16px 26px;border-radius:20px;
+  opacity:0;pointer-events:none;z-index:60;background:var(--bg);
+  box-shadow:9px 9px 18px var(--dark), -9px -9px 18px var(--light);
+}
+.answer-flash.show{animation:flashPop .85s ease;}
+.answer-flash.flash-correct{color:var(--success);}
+.answer-flash.flash-wrong{color:var(--danger);}
+@keyframes flashPop{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.6);}
+  25%{opacity:1;transform:translate(-50%,-50%) scale(1.1);}
+  75%{opacity:1;transform:translate(-50%,-50%) scale(1);}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(.9);}
+}
+
+/* ---------- Result screen ---------- */
+.result-card{text-align:center;}
+.result-icon{font-size:52px;margin-bottom:6px;}
+.result-text{font-size:17px;font-weight:800;margin:6px 0;}
+.result-answer{color:var(--maroon);font-weight:700;margin-bottom:16px;}
+.result-scores{display:flex;justify-content:space-around;font-size:14px;margin-bottom:18px;}
+.result-scores b{color:var(--maroon);}
+
+/* ---------- Dice screen ---------- */
+.dice-face{
+  width:100px;height:100px;margin:0 auto 14px;border-radius:22px;
+  display:flex;align-items:center;justify-content:center;font-size:52px;
+}
+.dice-face.dice-rolling{animation:diceRoll 1.1s ease;}
+@keyframes diceRoll{
+  0%{transform:rotate(0deg) scale(1);}
+  20%{transform:rotate(160deg) scale(1.15);}
+  40%{transform:rotate(320deg) scale(.95);}
+  60%{transform:rotate(480deg) scale(1.1);}
+  80%{transform:rotate(620deg) scale(1);}
+  100%{transform:rotate(720deg) scale(1);}
+}
+.dice-result{text-align:center;font-weight:800;color:var(--maroon-d);min-height:22px;margin-bottom:10px;}
+
+/* ---------- Decisive round ---------- */
+.decisive-card{border:3px solid var(--maroon);animation:decisiveGlow 1.6s infinite;}
+.decisive-title{text-align:center;color:var(--maroon-d);font-size:24px;margin-bottom:6px;}
+@keyframes decisiveGlow{
+  0%,100%{box-shadow:9px 9px 18px var(--dark), -9px -9px 18px var(--light), 0 0 0 rgba(122,30,60,0);}
+  50%{box-shadow:9px 9px 18px var(--dark), -9px -9px 18px var(--light), 0 0 26px rgba(122,30,60,.55);}
+}
+
+/* ---------- Victory ---------- */
+.victory-card{text-align:center;margin-top:60px;}
+.victory-title{font-size:30px;color:var(--maroon);margin-bottom:14px;animation:popIn .5s ease;}
+@keyframes popIn{
+  0%{transform:scale(.5);opacity:0;}
+  70%{transform:scale(1.08);opacity:1;}
+  100%{transform:scale(1);}
+}
+.victory-members{font-size:15px;margin-bottom:8px;}
+.victory-scores{font-size:14px;color:var(--muted);margin-bottom:20px;}
+
+.confetti-container{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:5;}
+.confetti-piece{
+  position:absolute;top:-10px;width:9px;height:16px;opacity:.95;
+  animation-name:confettiFall;animation-timing-function:ease-in;animation-fill-mode:forwards;
+}
+@keyframes confettiFall{
+  to{top:110%;transform:translateY(0) rotate(720deg);}
+}
+
+/* ---------- Small screens tuning ---------- */
+@media (max-width:360px){
+  .emojis-display{font-size:38px;letter-spacing:5px;}
+  .prep-emojis-box{font-size:32px;}
+}

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>التخمين بالإيموجي</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- شريط علوي دائم: النقاط + رصيد المساعدات -->
+<div id="topbar" class="neu-flat">
+  <div class="topbar-team">
+    <span class="topbar-name">الفريق الأول</span>
+    <span class="topbar-score" id="mini-score-team1">0</span>
+    <div class="topbar-badges" id="badges-team1"></div>
+  </div>
+  <div class="topbar-vs">VS</div>
+  <div class="topbar-team">
+    <span class="topbar-name">الفريق الثاني</span>
+    <span class="topbar-score" id="mini-score-team2">0</span>
+    <div class="topbar-badges" id="badges-team2"></div>
+  </div>
+</div>
+
+<main id="app">
+
+  <!-- 1) شاشة البداية -->
+  <section class="screen active" id="screen-splash">
+    <div class="card neu-raised splash-card">
+      <div class="logo-slot neu-inset">🖼️ مكان الشعار (Logo)</div>
+      <h1 class="game-title">التخمين بالإيموجي</h1>
+      <p class="subtitle">لعبة تخمين جماعية لجهاز واحد — اجمعوا الأصدقاء وابدأوا!</p>
+      <button id="start-game-btn" class="big-btn neu-btn primary">ابدأ اللعبة 🚀</button>
+    </div>
+  </section>
+
+  <!-- 2) شاشة إدخال الحكم واللاعبين -->
+  <section class="screen" id="screen-setup">
+    <div class="card neu-raised">
+      <h2>إعداد اللعبة</h2>
+      <label class="field-label">اسم الحكم</label>
+      <input type="text" id="judge-name-input" class="neu-input" placeholder="اسم الحكم">
+
+      <label class="field-label">أسماء اللاعبين</label>
+      <div id="players-list"></div>
+      <button id="add-player-btn" type="button" class="small-btn neu-btn-sm">➕ إضافة لاعب</button>
+
+      <div id="setup-errors" class="error-box"></div>
+      <button id="continue-setup-btn" class="big-btn neu-btn primary">متابعة ▶</button>
+    </div>
+  </section>
+
+  <!-- 3) شاشة توزيع الفرق -->
+  <section class="screen" id="screen-teams">
+    <div class="card neu-raised">
+      <div id="teams-shuffling" class="shuffling">
+        <div class="shuffle-spinner">🔀</div>
+        <p>جارٍ توزيع الفرق عشوائيًا...</p>
+      </div>
+      <div id="teams-result" class="hidden">
+        <div class="teams-grid">
+          <div class="team-box neu-inset">
+            <h3>الفريق الأول</h3>
+            <ul id="team1-list"></ul>
+          </div>
+          <div class="team-box neu-inset">
+            <h3>الفريق الثاني</h3>
+            <ul id="team2-list"></ul>
+          </div>
+        </div>
+        <p id="shared-player-note" class="shared-note hidden"></p>
+        <button id="teams-next-btn" class="big-btn neu-btn primary">ابدأ الجولات 🎮</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4) شاشة اختيار المجال -->
+  <section class="screen" id="screen-category">
+    <div class="card neu-raised">
+      <h2>اختر المجال</h2>
+      <div id="category-options" class="options-column"></div>
+    </div>
+  </section>
+
+  <!-- 5) شاشة اختيار مصدر السؤال -->
+  <section class="screen" id="screen-source">
+    <div class="card neu-raised">
+      <h2>مصدر السؤال</h2>
+      <p id="source-category-label" class="muted"></p>
+      <button id="source-system-btn" class="big-btn neu-btn">📚 أسئلة النظام</button>
+      <button id="source-manual-btn" class="big-btn neu-btn">✍️ سؤال يدوي من الحكم</button>
+      <div id="source-error" class="error-box"></div>
+    </div>
+  </section>
+
+  <!-- 6) شاشة إدخال سؤال يدوي -->
+  <section class="screen" id="screen-manual">
+    <div class="card neu-raised">
+      <h2>سؤال يدوي</h2>
+      <label class="field-label">الإيموجيات</label>
+      <input type="text" id="manual-emojis-input" class="neu-input emoji-input" placeholder="🍕🍝🏛️🇮🇹">
+      <label class="field-label">الإجابة الصحيحة</label>
+      <input type="text" id="manual-answer-input" class="neu-input" placeholder="الإجابة">
+      <div id="manual-error" class="error-box"></div>
+      <button id="manual-submit-btn" class="big-btn neu-btn primary">تم — ابدأ الجولة ▶</button>
+    </div>
+  </section>
+
+  <!-- 7) شاشة معاينة الحكم قبل بدء الجولة -->
+  <section class="screen" id="screen-judge-prep">
+    <div class="card neu-raised">
+      <div class="judge-only-badge">👁️ للحكم فقط — لا تُظهر هذه الشاشة للاعبين</div>
+      <p id="prep-category-label" class="muted"></p>
+      <p id="prep-starting-team" class="muted"></p>
+      <div class="prep-emojis-box neu-inset" id="prep-emojis"></div>
+      <div class="prep-answer-box">
+        <span>الإجابة:</span>
+        <b id="prep-answer"></b>
+      </div>
+      <button id="begin-round-btn" class="big-btn neu-btn primary">سلّم الجوال للفريق وابدأ ⏱️</button>
+    </div>
+  </section>
+
+  <!-- 8) شاشة اللعب -->
+  <section class="screen" id="screen-play">
+    <div class="card neu-raised" id="play-stage">
+      <div id="play-team-label" class="play-team-label"></div>
+      <div id="play-team-members" class="play-team-members"></div>
+
+      <div id="timer-display" class="timer-display neu-inset">05:00</div>
+
+      <div class="emojis-display neu-inset" id="play-emojis"></div>
+
+      <div class="assist-row">
+        <button id="assist-double-btn" class="assist-btn neu-btn-sm">×2 <span class="count">2</span></button>
+        <button id="assist-search-btn" class="assist-btn neu-btn-sm">🔍 <span class="count">2</span></button>
+      </div>
+
+      <button id="toggle-judge-panel-btn" class="link-btn">⚖️ لوحة الحكم</button>
+      <div id="judge-panel" class="judge-panel collapsed neu-inset">
+        <div class="judge-answer-row">
+          <span>الإجابة الصحيحة:</span>
+          <b id="judge-answer-text">••••••</b>
+          <button id="reveal-answer-btn" class="tiny-btn">👁️</button>
+        </div>
+        <div class="judge-actions">
+          <button id="btn-correct" class="big-btn neu-btn success">✅ جاوب صح</button>
+          <button id="btn-wrong" class="big-btn neu-btn danger">❌ جاب خطأ</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="search-overlay" class="overlay">
+      <div class="overlay-card neu-raised">
+        <p>🔍 وقت البحث</p>
+        <div class="search-countdown" id="search-countdown">15</div>
+      </div>
+    </div>
+
+    <div id="answer-flash" class="answer-flash"></div>
+  </section>
+
+  <!-- 9) شاشة نتيجة الجولة -->
+  <section class="screen" id="screen-result">
+    <div class="card neu-raised result-card">
+      <div class="result-icon" id="result-icon">✅</div>
+      <p id="result-text" class="result-text"></p>
+      <p id="result-answer" class="result-answer"></p>
+      <div class="result-scores">
+        <span>الفريق الأول: <b id="result-score-1">0</b></span>
+        <span>الفريق الثاني: <b id="result-score-2">0</b></span>
+      </div>
+      <button id="result-next-btn" class="big-btn neu-btn primary">التالي ▶</button>
+    </div>
+  </section>
+
+  <!-- 10) شاشة النرد -->
+  <section class="screen" id="screen-dice">
+    <div class="card neu-raised">
+      <h2>🎲 النرد</h2>
+      <div class="dice-face neu-inset" id="dice-face">🎲</div>
+      <p id="dice-result-text" class="dice-result"></p>
+      <div class="options-column">
+        <button id="dice-team1-btn" class="big-btn neu-btn">استخدمه للفريق الأول <span class="count">2</span></button>
+        <button id="dice-team2-btn" class="big-btn neu-btn">استخدمه للفريق الثاني <span class="count">2</span></button>
+        <button id="dice-both-btn" class="big-btn neu-btn">الاثنين معًا</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11) الجولة الحاسمة -->
+  <section class="screen" id="screen-decisive">
+    <div class="card neu-raised decisive-card">
+      <h2 class="decisive-title">🔥 الجولة الحاسمة 🔥</h2>
+      <p class="muted">وصل الفريقان إلى نقطة الفوز معًا! أول فريق يجيب بشكل صحيح يفوز باللعبة.</p>
+      <div class="emojis-display neu-inset" id="decisive-emojis"></div>
+      <div class="judge-answer-row">
+        <span>الإجابة (للحكم فقط):</span>
+        <b id="decisive-answer-text">••••••</b>
+        <button id="decisive-reveal-btn" class="tiny-btn">👁️</button>
+      </div>
+      <div class="judge-actions">
+        <button id="decisive-team1-btn" class="big-btn neu-btn success">✅ الفريق الأول أجاب أولًا</button>
+        <button id="decisive-team2-btn" class="big-btn neu-btn success">✅ الفريق الثاني أجاب أولًا</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12) شاشة الفوز -->
+  <section class="screen" id="screen-victory">
+    <div id="victory-confetti" class="confetti-container"></div>
+    <div class="card neu-raised victory-card">
+      <h1 id="victory-title" class="victory-title"></h1>
+      <p id="victory-members" class="victory-members"></p>
+      <p id="victory-scores" class="victory-scores"></p>
+      <button id="replay-btn" class="big-btn neu-btn primary">🔁 إعادة اللعب</button>
+    </div>
+  </section>
+
+</main>
+
+<script src="js/data.js"></script>
+<script src="js/state.js"></script>
+<script src="js/playerSetup.js"></script>
+<script src="js/teamAssignment.js"></script>
+<script src="js/questionManager.js"></script>
+<script src="js/timerManager.js"></script>
+<script src="js/scoring.js"></script>
+<script src="js/assists.js"></script>
+<script src="js/dice.js"></script>
+<script src="js/categorySwitch.js"></script>
+<script src="js/roundManager.js"></script>
+<script src="js/victory.js"></script>
+<script src="js/uiRender.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
